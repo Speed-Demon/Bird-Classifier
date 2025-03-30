@@ -1,5 +1,8 @@
 # Bird Call Classification using Audio Features
 
+## Data Source
+https://xeno-canto.org/
+
 ## Overview
 This project focuses on classifying bird species based on their audio calls using machine learning techniques. The pipeline involves:
 - Extracting audio features from bird call recordings.
@@ -93,7 +96,7 @@ print("Predicted Species:", encoder.inverse_transform(predicted_label))
 - Optimize hyperparameters for better performance.
 
 ## Author
-Developed by **Jay**.
+Developed by **Jay, Kshitij, Aryan**.
 
 ## License
 This project is open-source and available for educational purposes.
