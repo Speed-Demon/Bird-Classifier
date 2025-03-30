@@ -1,25 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bird Call Prediction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .upload-box {
+            border: 2px dashed #4CAF50;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            background: #f9f9f9;
+            transition: 0.3s;
+            margin: 20px;
+            margin-bottom: 25px;
+        }
+        .upload-box:hover {
+            background: #e8f5e9;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 25px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .prediction-box {
+            /* margin-top: 15px; */
+            padding: 10px;
+            background-color: #ffeb3b;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .error-box {
+            color: red;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Upload Audio File</h1>
-    <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="audio" accept=".wav, .mp3">
-        <input type="submit" value="Upload">
-    </form>
+    <div class="container">
+        <h1>Upload Audio File</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <label for="audio-upload" class="upload-box">
+                <i class="fa fa-cloud-upload-alt"></i> Drag & Drop or Click to Upload
+            </label>
+            <input type="file" id="audio-upload" name="audio" accept=".wav, .mp3">
+            <br>
+            <input type="submit" value="Upload" class="btn">
+        </form>
 
-    {% if prediction %}
-        <h2>Predicted Species: {{ prediction }}</h2>
-        <audio controls>
-            <source src="/audio?audio_data={{ audio_data }}" type="audio/wav">
-            Your browser does not support the audio element.
-        </audio>
-    {% endif %}
+        {% if prediction %}
+            <div class="prediction-box">
+                Predicted Species: {{ prediction }}
+            </div>
+        {% endif %}
 
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+        {% if error %}
+            <div class="error-box">
+                {{ error }}
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>

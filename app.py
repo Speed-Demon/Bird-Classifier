@@ -7,13 +7,17 @@ from flask import Flask, render_template, request, send_file
 
 app = Flask(__name__)
 
-# Load the trained model
+# Load the trained model 
 try:
-    model = joblib.load('best_model.pkl')
+    model = joblib.load('/Users/rushikesh/Desktop/Jay/AOML/project/best_model_aryan.pkl')
     print("Model loaded successfully.")
 except Exception as e:
     print(f"Error loading model: {e}")
     model = None
+
+# Load the saved LabelEncoder
+
+label_encoder = joblib.load("/Users/rushikesh/Desktop/Jay/AOML/project/top_100_species/label_encoder.pkl")
 
 # Load the scaler
 try:
@@ -79,9 +83,9 @@ def upload_audio():
                     if model is not None:
                         prediction = model.predict(features_scaled)[0]
 
-                        labels = ['Black_footed_Albatross', 'Laysan_Albatross', 'Groove_billed_Ani', 'Red_winged_Blackbird', 'Rusty_Blackbird', 'Bobolink', 'Indigo_Bunting', 'Northern_Cardinal', 'Chuck_will_s_widow', 'Brandt_Cormorant', 'Bronzed_Cowbird', 'Cape_Glossy_Starling', 'Caspian_Tern', 'Common_Tern', 'Crested_Auklet', 'Dark_eyed_Junco', 'Downy_Woodpecker', 'Eastern_Towhee', 'Eurasian_Collared_Dove', 'Fairy_Tern', 'Finch', 'Forsters_Tern', 'Gadwall', 'Geococcyx', 'Golden_Winged_Warbler', 'Gray_Catbird', 'Gray_Kingbird', 'Great_Cormorant', 'Great_Grey_Shrike', 'Green_Jay', 'Guillemot', 'Heermann_Gull', 'Horned_Lark', 'House_Sparrow', 'Iceland_Gull', 'Ivory_Gull', 'Javan_Myna', 'Kentucky_Warbler', 'Kiwi', 'Laughing_Gull', 'Le_Conte_s_Thrasher', 'Least_Tern', 'Loggerhead_Shrike', 'Magnolia_Warbler', 'Marsh_Wren', 'Merlin', 'Mockingbird', 'Mourning_Dove', 'Nightingale']
+                        # labels = ['Black_footed_Albatross', 'Laysan_Albatross', 'Groove_billed_Ani', 'Red_winged_Blackbird', 'Rusty_Blackbird', 'Bobolink', 'Indigo_Bunting', 'Northern_Cardinal', 'Chuck_will_s_widow', 'Brandt_Cormorant', 'Bronzed_Cowbird', 'Cape_Glossy_Starling', 'Caspian_Tern', 'Common_Tern', 'Crested_Auklet', 'Dark_eyed_Junco', 'Downy_Woodpecker', 'Eastern_Towhee', 'Eurasian_Collared_Dove', 'Fairy_Tern', 'Finch', 'Forsters_Tern', 'Gadwall', 'Geococcyx', 'Golden_Winged_Warbler', 'Gray_Catbird', 'Gray_Kingbird', 'Great_Cormorant', 'Great_Grey_Shrike', 'Green_Jay', 'Guillemot', 'Heermann_Gull', 'Horned_Lark', 'House_Sparrow', 'Iceland_Gull', 'Ivory_Gull', 'Javan_Myna', 'Kentucky_Warbler', 'Kiwi', 'Laughing_Gull', 'Le_Conte_s_Thrasher', 'Least_Tern', 'Loggerhead_Shrike', 'Magnolia_Warbler', 'Marsh_Wren', 'Merlin', 'Mockingbird', 'Mourning_Dove', 'Nightingale']
 
-                        species_name = labels[prediction]
+                        species_name = label_encoder.inverse_transform([prediction])[0]
 
                         return render_template('index.html', prediction=species_name, audio_data=audio_data)
                     else:
@@ -94,10 +98,10 @@ def upload_audio():
 
     return render_template('index.html')
 
-@app.route('/audio')
-def play_audio():
-    audio_data = request.args.get('audio_data')
-    return send_file(io.BytesIO(audio_data), mimetype='audio/wav')
+# @app.route('/audio')
+# def play_audio():
+#     audio_data = request.args.get('audio_data')
+#     return send_file(io.BytesIO(audio_data), mimetype='audio/wav')
 
 if __name__ == '__main__':
     app.run(debug=True)
